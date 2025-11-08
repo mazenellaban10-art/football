@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Manager 2025</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen active">
+            <div class="logo">
+                <h1>⚽ Football Manager 2025</h1>
+                <p class="subtitle">Build Your Dream Team</p>
+            </div>
+            <button class="btn-primary" onclick="startGame()">Start Game</button>
+        </div>
+
+        <!-- User Info Screen -->
+        <div id="user-info-screen" class="screen">
+            <h2>Welcome to Football Manager 2025</h2>
+            <div class="form-group">
+                <label for="destination">Your Destination (Club/Country):</label>
+                <input type="text" id="destination" placeholder="e.g., Real Madrid, Manchester United" required>
+            </div>
+            <div class="form-group">
+                <label for="player-name">Your Name:</label>
+                <input type="text" id="player-name" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label for="player-age">Your Age:</label>
+                <input type="number" id="player-age" placeholder="Enter your age" min="1" max="120" required>
+            </div>
+            <button class="btn-primary" onclick="collectUserInfo()">Continue</button>
+        </div>
+
+        <!-- Formation Display -->
+        <div id="formation-screen" class="screen">
+            <div class="header-info">
+                <h2>Build Your 4-3-3 Formation</h2>
+                <div class="user-details">
+                    <p><strong>Manager:</strong> <span id="display-name"></span></p>
+                    <p><strong>Age:</strong> <span id="display-age"></span></p>
+                    <p><strong>Destination:</strong> <span id="display-destination"></span></p>
+                    <button class="btn-secondary" onclick="cancelDestination()">Cancel Destination</button>
+                </div>
+            </div>
+            
+            <div class="formation-container">
+                <div class="field">
+                    <!-- Goalkeeper -->
+                    <div class="position-row" data-position="GK">
+                        <div class="position-label">Goalkeeper</div>
+                        <div class="position-slot" onclick="selectPlayer('GK')">
+                            <div id="player-GK" class="player-card empty">Select GK</div>
+                        </div>
+                    </div>
+
+                    <!-- Defenders (4) -->
+                    <div class="position-row" data-position="DEF">
+                        <div class="position-label">Defenders</div>
+                        <div class="defenders-line">
+                            <div class="position-slot" onclick="selectPlayer('LB')">
+                                <div id="player-LB" class="player-card empty">Select LB</div>
+                            </div>
+                            <div class="position-slot" onclick="selectPlayer('CB1')">
+                                <div id="player-CB1" class="player-card empty">Select CB</div>
+                            </div>
+                            <div class="position-slot" onclick="selectPlayer('CB2')">
+                                <div id="player-CB2" class="player-card empty">Select CB</div>
+                            </div>
+                            <div class="position-slot" onclick="selectPlayer('RB')">
+                                <div id="player-RB" class="player-card empty">Select RB</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Midfielders (3) -->
+                    <div class="position-row" data-position="MID">
+                        <div class="position-label">Midfielders</div>
+                        <div class="midfielders-line">
+                            <div class="position-slot" onclick="selectPlayer('CM1')">
+                                <div id="player-CM1" class="player-card empty">Select CM</div>
+                            </div>
+                            <div class="position-slot" onclick="selectPlayer('CM2')">
+                                <div id="player-CM2" class="player-card empty">Select CM</div>
+                            </div>
+                            <div class="position-slot" onclick="selectPlayer('CM3')">
+                                <div id="player-CM3" class="player-card empty">Select CM</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Forwards (3) -->
+                    <div class="position-row" data-position="FWD">
+                        <div class="position-label">Forwards</div>
+                        <div class="forwards-line">
+                            <div class="position-slot" onclick="selectPlayer('LW')">
+                                <div id="player-LW" class="player-card empty">Select LW</div>
+                            </div>
+                            <div class="position-slot" onclick="selectPlayer('ST')">
+                                <div id="player-ST" class="player-card empty">Select ST</div>
+                            </div>
+                            <div class="position-slot" onclick="selectPlayer('RW')">
+                                <div id="player-RW" class="player-card empty">Select RW</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-indicator">
+                <p>Selected: <span id="selected-count">0</span> / 11</p>
+            </div>
+        </div>
+
+        <!-- Player Selection Modal -->
+        <div id="player-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h3 id="modal-position-title">Select Player</h3>
+                <div id="player-choices" class="player-choices">
+                    <!-- Player choices will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Favorite Player Screen -->
+        <div id="favorite-screen" class="screen">
+            <h2>Who is Your Favorite Player Ever?</h2>
+            <div class="form-group">
+                <input type="text" id="favorite-player" placeholder="Enter your favorite player's name" required>
+            </div>
+            <button class="btn-primary" onclick="submitFavoritePlayer()">Submit</button>
+        </div>
+
+        <!-- Final Screen -->
+        <div id="final-screen" class="screen">
+            <h2>Your Team is Complete! 🎉</h2>
+            <div class="team-summary">
+                <div class="summary-section">
+                    <h3>Manager Information</h3>
+                    <p><strong>Name:</strong> <span id="final-name"></span></p>
+                    <p><strong>Age:</strong> <span id="final-age"></span></p>
+                    <p><strong>Destination:</strong> <span id="final-destination"></span></p>
+                    <p><strong>Favorite Player:</strong> <span id="final-favorite"></span></p>
+                </div>
+                <div class="summary-section">
+                    <h3>Your 4-3-3 Formation</h3>
+                    <div id="final-formation" class="final-formation"></div>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="restartGame()">Play Again</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
